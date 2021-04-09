@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {filteresValueType} from "./App";
+import {AddItemForm} from "./AddItemForm";
 
 export type TasksType = {
     id: string
@@ -19,27 +20,7 @@ type PropsType = {
 }
 
 export let TodoList = (props: PropsType) => {
-    let [title, setTitle] = useState<string>("");
-    let [error, setError] = useState<string | null>(null)
-    const addTask = () => {
-        const trimmedTitle = title.trim();
-        if (trimmedTitle) {
-            props.addTask(trimmedTitle, props.id);
-        } else {
-            setError("Davaj po novoj misza")
-        }
-        setTitle("")
-    }
 
-    const onChageHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-    }
-    const onPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null);
-        if (e.charCode === 13) {
-            addTask();
-        }
-    }
     const changeFilterAll = () => {
         props.changeFilter("all", props.id);
     }
@@ -53,26 +34,19 @@ export let TodoList = (props: PropsType) => {
         props.removeTodoList(props.id)
     }
 
+    const addTask = (title: string) => props.addTask(title, props.id)
 
     return (
         <div>
 
             <h3>{props.title}<button onClick={removeTodoList}>X</button></h3>
-            <div>
-                <input value={title}
-                       onChange={onChageHandler}
-                       onKeyPress={onPressHandler}
-                       className={error ? "error" : ""}/>
-                <button onClick={addTask}>+</button>
-                {error && <div className="error-message">{error}</div>}
-            </div>
+            <AddItemForm addItem={addTask}/>
             <ul>
                 {props.tasks.map(t => {
                     const removeTask = () => {
                         props.removeTask(t.id, props.id)
                     }
                     const changeTask = (e: ChangeEvent<HTMLInputElement>) => {
-                        setError(null)
                         props.changeTaskStatus(t.id, e.currentTarget.checked, props.id)
                     }
                     return <li key={t.id}>

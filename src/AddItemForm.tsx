@@ -3,7 +3,7 @@ import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 export type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
-const AddItemForm = (props: AddItemFormPropsType) => {
+export const AddItemForm = (props: AddItemFormPropsType) => {
     let [title, setTitle] = useState<string>("");
     let [error, setError] = useState<string | null>();
 
