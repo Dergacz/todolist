@@ -29,6 +29,9 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
         }
         setTitle("")
     }
+    const onBlurOff = () => {
+        setError("")
+    }
 
     return (
         <div>
@@ -40,18 +43,13 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
                 onChange={onChageHandler}
                 onKeyPress={onPressHandler}
                 helperText={error}
+                onBlur={onBlurOff}
                 />
-            {/*<input value={title}*/}
-            {/*       onChange={onChageHandler}*/}
-            {/*       onKeyPress={onPressHandler}*/}
-            {/*       className={error ? "error" : ""}/>*/}
-            {/*<button onClick={addItem}>+</button>*/}
             <IconButton
                 onClick={addItem}
             >
                 <AddBox/>
             </IconButton>
-            {/*{error && <div className="error-message">{error}</div>}*/}
         </div>
     )
 }

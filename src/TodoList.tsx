@@ -39,7 +39,12 @@ export let TodoList = (props: PropsType) => {
         props.removeTodoList(props.id)
     }
     const changeTodolistTitle = (title: string) => {
-        props.changeTodolistTitle(props.id, title)
+        if (title.trim() !== ""){
+            props.changeTodolistTitle(props.id, title);
+        }
+        else {
+            props.changeTodolistTitle(props.id, props.title);
+        }
     }
 
     const addTask = (title: string) => props.addTask(title, props.id)
@@ -49,7 +54,6 @@ export let TodoList = (props: PropsType) => {
             <h3><EditableSpan
                 title={props.title}
                 changeTitle={changeTodolistTitle}/>
-                {/*<button onClick={removeTodoList}>X</button>*/}
                 <IconButton onClick={removeTodoList}>
                     <Delete/>
                 </IconButton>
@@ -67,10 +71,6 @@ export let TodoList = (props: PropsType) => {
                         props.changeTaskTitle(t.id, title, props.id)
                     }
                     return <li key={t.id}>
-                        {/*<input type="checkbox"*/}
-                        {/*       checked={t.isDone}*/}
-                        {/*       onChange={changeTask}*/}
-                        {/*/>*/}
                         <Checkbox
                             checked={t.isDone}
                             onChange={changeTask}
@@ -79,8 +79,7 @@ export let TodoList = (props: PropsType) => {
                         <EditableSpan
                             title={t.title}
                             changeTitle={changeTitle}
-                        />
-                        {/*<button onClick={removeTask}>x</button>*/}
+                        />/}
                         <IconButton onClick={removeTask}>
                             <Delete/>
                         </IconButton>

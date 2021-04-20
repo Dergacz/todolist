@@ -10,8 +10,9 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
     let [title, setTitle] = useState<string>(props.title);
     const onEditMode = () => setEditMode(true);
     const offEditMode = () => {
-        setEditMode(false);
-        props.changeTitle(title);
+            setEditMode(false);
+            props.changeTitle(title);
+
     }
     const onChageHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
@@ -25,11 +26,6 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
                 onBlur={offEditMode}
                 autoFocus
                 onChange={onChageHandler}/>
-            // ? <input
-            //     value={title}
-            //     onBlur={offEditMode}
-            //     autoFocus
-            //     onChange={onChageHandler}/>
             : <
                 span
                 onDoubleClick={onEditMode}> {props.title}
