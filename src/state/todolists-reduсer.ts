@@ -2,23 +2,24 @@ import {FilteresValueType, TodoListType} from "../App";
 import {v1} from "uuid";
 import {type} from "os";
 
-type RemoveTodolistAT = {
+export type RemoveTodolistAT = {
     type: "REMOVE_TODOLIST"
     todoListID: string
 }
 
-type AddTodolistAT = {
+export type AddTodolistAT = {
     type: "ADD_TODOLIST"
     title: string
+    todolistId: string
 }
 
-type ChangeTodoListTitleAT = {
+export type ChangeTodoListTitleAT = {
     type: "CHANGE_TODOLIST_TITLE"
     todolistId: string
     title: string
 }
 
-type ChangeTodoListFilterAT = {
+export type ChangeTodoListFilterAT = {
     type: "CHANGE_TODOLIST_FILTER"
     todolistId: string
     filter: FilteresValueType
@@ -26,12 +27,12 @@ type ChangeTodoListFilterAT = {
 
 export type ActionsType = RemoveTodolistAT | AddTodolistAT | ChangeTodoListTitleAT | ChangeTodoListFilterAT
 
-export const todoListsReducer = (todoLists: TodoListType[], action: ActionsType): TodoListType[] => {
+export const todolistsReducer = (todoLists: TodoListType[], action: ActionsType): TodoListType[] => {
     switch (action.type) {
         case "REMOVE_TODOLIST":
             return todoLists.filter(tl => tl.id !== action.todoListID);
         case "ADD_TODOLIST":
-            const newTodolistID = v1();
+            const newTodolistID = action.todolistId;
             const newTodolist: TodoListType = {
                 id: newTodolistID, title: action.title, filter: "all"
             }
@@ -54,7 +55,7 @@ export const todoListsReducer = (todoLists: TodoListType[], action: ActionsType)
 }
 
 
-export const removeTodoListAC = (todoListID: string): RemoveTodolistAT => {
+export const removeTodolistAC = (todoListID: string): RemoveTodolistAT => {
     return {
         type: "REMOVE_TODOLIST",
         todoListID
@@ -64,7 +65,8 @@ export const removeTodoListAC = (todoListID: string): RemoveTodolistAT => {
 export const addTodolistAC = (title: string): AddTodolistAT => {
     return {
         type: "ADD_TODOLIST",
-        title
+        title,
+        todolistId: v1()
     }
 }
 
