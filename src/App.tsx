@@ -6,13 +6,13 @@ import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 
-export type filteresValueType = "all" | "completed" | "active";
+export type FilteresValueType = "all" | "completed" | "active";
 
-//типизация тудулиста
+
 export type TodoListType = {
     id: string,
     title: string,
-    filter: filteresValueType
+    filter: FilteresValueType
 }
 
 export type TaskStateType = {
@@ -73,7 +73,7 @@ function App() {
         setTasks({...tasks, [todoListID]: updatedTask});
     }
 
-    let changeFilter = (value: filteresValueType, todoListID: string) => {
+    let changeFilter = (value: FilteresValueType, todoListID: string) => {
         const updatedTodoList = todoLists.map(tl => tl.id === todoListID ? {...tl, filter: value} : tl);
         setTodoLists(updatedTodoList);
     }
@@ -110,7 +110,7 @@ function App() {
             id: newTodolistID, title, filter: "all"
         }
         setTodoLists([...todoLists, newTodolist]);
-        setTasks({...tasks, [newTodolistID]: []});
+        setTasks({ [newTodolistID]: [], ...tasks});
     }
 
     const todolistComponents = todoLists.map(tl => {
