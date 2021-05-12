@@ -5,16 +5,20 @@ import {AddBox} from "@material-ui/icons";
 export type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
-export const AddItemForm = (props: AddItemFormPropsType) => {
+export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
     let [title, setTitle] = useState<string>("");
     let [error, setError] = useState<string | null>();
 
-    const onChageHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("AddItemForm called");
+
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
 
     const onPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null);
+        if (error !== null){
+            setError(null);
+        }
         if (e.charCode === 13) {
             addItem();
         }
@@ -25,7 +29,7 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
         if (trimmedTitle) {
             props.addItem(trimmedTitle);
         } else {
-            setError("Davaj po novoj misza")
+            setError("Title is required");
         }
         setTitle("")
     }
@@ -40,7 +44,7 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
                 label={"Title"}
                 error={!!error}
                 value={title}
-                onChange={onChageHandler}
+                onChange={onChangeHandler}
                 onKeyPress={onPressHandler}
                 helperText={error}
                 onBlur={onBlurOff}
@@ -52,4 +56,4 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
             </IconButton>
         </div>
     )
-}
+})
