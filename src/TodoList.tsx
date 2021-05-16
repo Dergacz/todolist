@@ -74,44 +74,17 @@ export const TodoList = React.memo((props: PropsType) => {
                 </IconButton>
             </h3>
             <AddItemForm addItem={addTask}/>
-            {/*<ul style={{padding: "0", listStyle: "none"}}>*/}
-            {/*    {getTasksForTodoList().map(t => {*/}
-            {/*        const removeTask = () => {*/}
-            {/*            props.removeTask(t.id, props.id)*/}
-            {/*        }*/}
-            {/*        const changeTask = (e: ChangeEvent<HTMLInputElement>) => {*/}
-            {/*            props.changeTaskStatus(t.id, e.currentTarget.checked, props.id)*/}
-            {/*        }*/}
-            {/*        const changeTitle = (title: string) => {*/}
-            {/*            props.changeTaskTitle(t.id, title, props.id)*/}
-            {/*        }*/}
-            {/*        return <li key={t.id}>*/}
-            {/*            <Checkbox*/}
-            {/*                checked={t.isDone}*/}
-            {/*                onChange={changeTask}*/}
-            {/*                color = {"primary"}*/}
-            {/*            />*/}
-            {/*            <EditableSpan*/}
-            {/*                title={t.title}*/}
-            {/*                changeTitle={changeTitle}*/}
-            {/*            />*/}
-            {/*            <IconButton onClick={removeTask}>*/}
-            {/*                <Delete/>*/}
-            {/*            </IconButton>*/}
-            {/*        </li>*/}
-            {/*    })}*/}
-            {/*</ul>*/}
             <div>
                 {
-                    getTasksForTodoList.map(t => {
-                        <Task
+                    getTasksForTodoList().map(t => <Task
                             key={t.id}
                             task={t}
-                            removeTask={props.removeTask(t.task)}
+                            removeTask={props.removeTask}
                             changeTaskStatus={props.changeTaskStatus}
-                            changeTaskTitle={t.title}
+                            changeTaskTitle={props.changeTaskTitle}
+                            todolistId={props.id}
                             />
-                    })
+                    )
                 }
             </div>
             <div>

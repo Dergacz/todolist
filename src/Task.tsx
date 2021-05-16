@@ -1,37 +1,43 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useCallback, useState} from "react";
 import {Checkbox, IconButton, TextField} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {TasksType} from "./TodoList";
 import {EditableSpan} from "./EditableSpan";
 
 type TaskPropsType = {
+    todolistId: string
+    removeTask: (taskId: string, todolistId: string) => void
+    changeTaskStatus: (taskId: string, isDone: boolean, todolistId: string) => void
+    changeTaskTitle: (taskId: string, newValue: string, todolistId: string) => void
     task: TasksType
-    changeTaskStatus: (taskId: string, newIsDoneValue: boolean) => void
-    removeTask: (taskId: string) => void
-    changeTaskTitle: (taskId: string, newValue: string) => void
 }
 export const Task = React.memo(({
                                     task,
                                     changeTaskStatus,
                                     removeTask,
-                                    changeTaskTitle
+                                    changeTaskTitle,
+                                    todolistId
                                 }: TaskPropsType) => {
     console.log("Task called");
 
-    const onClickHandler = () => removeTask(task.id);
-
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        let newIsDoneValue = e.currentTarget.checked;
-        changeTaskStatus (task.id, newIsDoneValue);
+        changeTaskStatus(task.id, e.currentTarget.checked, todolistId)
     }
 
-    const onTitleChangeHandler = (newValue: string) => {
-        changeTaskTitle(task.id, newValue);
-    }
+    const onTitleChangeHandler = useCallback((newValue: string) => {
+        changeTaskTitle(task.id, newValue, todolistId);
+    }, [changeTaskTitle, task.id, todolistId]);
+
+    const onClickHandler = useCallback(() => removeTask(task.id, todolistId), [removeTask, task.id, todolistId]);
+
+    const opacityStyle = task.isDone === true ? {opacity: "0.5"} : {opacity: "1"}
 
 
     return (
-        <li key={task.id}>
+        <li
+            key={task.id}
+            style={opacityStyle}
+        >
             <Checkbox
                 checked={task.isDone}
                 onChange={onChangeHandler}
