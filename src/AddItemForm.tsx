@@ -1,22 +1,31 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {IconButton, TextField} from "@material-ui/core";
-import {AddBox} from "@material-ui/icons";
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {Box, Button, FormControl, IconButton, TextField} from '@material-ui/core';
+import {AddBox} from '@material-ui/icons';
 
 export type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
-export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
-    let [title, setTitle] = useState<string>("");
-    let [error, setError] = useState<string | null>();
 
-    console.log("AddItemForm called");
+export const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
+    console.log("AddItemForm is called")
+    let [title, setTitle] = useState("")
+    let [error, setError] = useState<string | null>(null)
+
+    const addItem = () => {
+        if (title.trim() !== "") {
+            props.addItem(title);
+            setTitle("");
+        } else {
+            setError("Title is required");
+        }
+    }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
 
-    const onPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (error !== null){
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (error !== null) {
             setError(null);
         }
         if (e.charCode === 13) {
@@ -24,36 +33,17 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
         }
     }
 
-    const addItem = () => {
-        const trimmedTitle = title.trim();
-        if (trimmedTitle) {
-            props.addItem(trimmedTitle);
-        } else {
-            setError("Title is required");
-        }
-        setTitle("")
-    }
-    const onBlurOff = () => {
-        setError("")
-    }
-
-    return (
-        <div>
-            <TextField
-                variant={"outlined"}
-                label={"Title"}
-                error={!!error}
-                value={title}
-                onChange={onChangeHandler}
-                onKeyPress={onPressHandler}
-                helperText={error}
-                onBlur={onBlurOff}
-                />
-            <IconButton
-                onClick={addItem}
-            >
-                <AddBox/>
-            </IconButton>
-        </div>
-    )
-})
+    return <div>
+        <TextField variant="outlined"
+                   error={!!error}
+                   value={title}
+                   onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   label="Title"
+                   helperText={error}
+        />
+        <IconButton color="primary" onClick={addItem}>
+            <AddBox />
+        </IconButton>
+    </div>
+} );
